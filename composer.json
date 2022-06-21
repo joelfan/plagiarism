@@ -1,0 +1,25 @@
+{
+  "name": "joelfan/plagiarism",
+  "description": "A library to use Ithenticate API easier and faster, to check and prevent plagiarism",
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "joelfan/ithenticate",
+        "version": "1.0",
+        "source": {
+          "url": "https://github.com/joelfan/ithenticate.git",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    }
+  ],
+  "require": {
+    "joelfan/ithenticate": "*", 
+	"phpxmlrpc/phpxmlrpc": "*" 
+  },
+  "autoload": {
+	  	"classmap": ["vendor/joelfan/ithenticate"]
+        }
+}
