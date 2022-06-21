@@ -83,10 +83,8 @@ class PlagiarismPlugin extends GenericPlugin {
 		$firstName = ucfirst($pieces2[0]);
 		$lastName = ucfirst($pieces2[1]);
 		$contextName = $firstName.' '.$lastName;
-		error_log("JoelFan: $user $firstName $lastName");
 		
 		// Connect with superuser credentials to check if user $user is already defined
-		error_log("JoelFan: $proxyName:$proxyPort");
 		if ((isset($proxyName))&& (isset($proxyPort))) 
 			$ithenticate = new \joelfan\ithenticate\Ithenticate($superUser, $superPass, (object) array("proxyName" => $proxyName, "proxyPort" => $proxyPort ));
 		else 
