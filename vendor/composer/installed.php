@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'joelfan/plagiarism',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => NULL,
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'joelfan/ithenticate' => array(
+            'pretty_version' => '1.0',
+            'version' => '1.0.0.0',
+            'reference' => 'master',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../joelfan/ithenticate',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'joelfan/plagiarism' => array(
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => NULL,
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'phpxmlrpc/phpxmlrpc' => array(
+            'pretty_version' => '4.7.2',
+            'version' => '4.7.2.0',
+            'reference' => '0336f44b51a40b674ef93c35529373d2225b5f1d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpxmlrpc/phpxmlrpc',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);
