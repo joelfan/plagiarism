@@ -75,29 +75,36 @@ class PlagiarismPlugin extends GenericPlugin {
 		$proxyName = Config::getVar('proxy', 'http_host');
 		$proxyPort = Config::getVar('proxy', 'http_port');
 		$user = $this->getSetting($journalId, 'ithenticate_user');
-        	$pass = $this->getSetting($journalId, 'ithenticate_pass');
+        $pass = $this->getSetting($journalId, 'ithenticate_pass');
 		$superUser = Config::getVar('ithenticate', 'username');
 		$superPass = Config::getVar('ithenticate', 'password');
+		if ((!isset($user)) || ($user == "")) {
+			$user = $superUser;
+			$pass = $superPass;
+		}
 		$pieces1 = explode('@', $user);
 		$pieces2 = explode('.', $pieces1[0]);
 		$firstName = ucfirst($pieces2[0]);
-		$lastName = ucfirst($pieces2[1]);
+		$lastName = ucfirst($pieces2[1]) ?? $firstName;
 		$contextName = $firstName.' '.$lastName;
 		
 		// Connect with superuser credentials to check if user $user is already defined
-		if ((isset($proxyName))&& (isset($proxyPort))) 
-			$ithenticate = new \joelfan\ithenticate\Ithenticate($superUser, $superPass, (object) array("proxyName" => $proxyName, "proxyPort" => $proxyPort ));
+		if ((isset($proxyName))&& (isset($proxyPort))) {
+			error_log("NewPlagiarism: We have proxy $proxyName:$proxyPort");
+			$ithenticate = new \joelfan\ithenticate\Ithenticate($superUser, $superPass, (object) array("proxyName" => $proxyName, "proxyPort" => $proxyPort ));			
+		}
 		else 
 			$ithenticate = new \joelfan\ithenticate\Ithenticate($superUser, $superPass);
 
 		// get the list of users
 		$userList = $ithenticate->fetchUserList();
 		if (!($userId = array_search($user, $userList))) {
+			error_log("NewPlagiarism: Define user $user $firstName $lastName");
 			$userId = $ithenticate->addUser($user, $pass, $firstName, $lastName);
 		}
 		unset($ithenticate); // frees the object
 		
-		// Connect with superuser credentials to check if user $user is already defined
+		// Connect with normal user credentials
 		if ((isset($proxyName))&& (isset($proxyPort))) 
 			$ithenticate = new \joelfan\ithenticate\Ithenticate($user, $pass, (object) array("proxyName" => $proxyName, "proxyPort" => $proxyPort ));
 		else 
@@ -109,7 +116,7 @@ class PlagiarismPlugin extends GenericPlugin {
 		if (!($groupId = array_search($contextName, $groupList))) {
 			// No folder group found for the context; create one.
 			$groupId = $ithenticate->createGroup($contextName);
-                        if (!$groupId) {
+            if (!$groupId) {
 				error_log('Could not create folder group for context ' . $contextName . ' on iThenticate.');
 				return false;
 			}
