@@ -74,6 +74,7 @@ class PlagiarismPlugin extends GenericPlugin {
 
 		$proxyName = Config::getVar('proxy', 'http_host');
 		$proxyPort = Config::getVar('proxy', 'http_port');
+		//error_log("NewPlagiarism: We have proxy $proxyName:$proxyPort:");
 		$user = $this->getSetting($journalId, 'ithenticate_user');
         $pass = $this->getSetting($journalId, 'ithenticate_pass');
 		$superUser = Config::getVar('ithenticate', 'username');
@@ -89,17 +90,19 @@ class PlagiarismPlugin extends GenericPlugin {
 		$contextName = $firstName.' '.$lastName;
 		
 		// Connect with superuser credentials to check if user $user is already defined
-		if ((isset($proxyName))&& (isset($proxyPort))) {
-			error_log("NewPlagiarism: We have proxy $proxyName:$proxyPort");
+		if ((isset($proxyName)) && (isset($proxyPort)) && ($proxyName != "") && ($proxyPort != "")) {
+			//error_log("NewPlagiarism: We are trying with proxy $proxyName:$proxyPort:");
 			$ithenticate = new \joelfan\ithenticate\Ithenticate($superUser, $superPass, (object) array("proxyName" => $proxyName, "proxyPort" => $proxyPort ));			
 		}
-		else 
+		else {
+			//error_log("NewPlagiarism: We are trying without proxy ");
 			$ithenticate = new \joelfan\ithenticate\Ithenticate($superUser, $superPass);
+		}
 
 		// get the list of users
 		$userList = $ithenticate->fetchUserList();
 		if (!($userId = array_search($user, $userList))) {
-			error_log("NewPlagiarism: Define user $user $firstName $lastName");
+			//error_log("NewPlagiarism: Define user $user $firstName $lastName");
 			$userId = $ithenticate->addUser($user, $pass, $firstName, $lastName);
 		}
 		unset($ithenticate); // frees the object
